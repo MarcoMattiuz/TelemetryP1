@@ -25,6 +25,8 @@ add_library(
     # Sources
     ${CMAKE_CURRENT_SOURCE_DIR}/core/app.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/graphs.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/globals.cpp
+    
     # GUI
     ${imgui_srcs}
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui/backends/imgui_impl_glfw.cpp

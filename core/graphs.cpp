@@ -16,8 +16,9 @@ using std::vector,std::cout,std::endl;
 //   vector<double> y;
 // };
 
-Acceleration globalAcceleration;
+
 void loadAccelerationCSV(Acceleration& acc) {
+    
     io::CSVReader<6> in("../csv_samples/acceleration.csv");
     in.read_header(io::ignore_missing_column, "time","throttle","brake","speed","x","y");
     double time,throttle,brake,speed,x,y ;
@@ -35,14 +36,28 @@ void loadAccelerationCSV(Acceleration& acc) {
 }
 
 void PlotAcceleration(const Acceleration& data) {
-    if (ImPlot::BeginPlot("Acceleration Data")) {
-       
+    if (ImPlot::BeginPlot("Acceleration Data",ImVec2(0,0))) {
+        if(!data.time.empty() && !data.throttle.empty() && !data.brake.empty() && !data.speed.empty() ){
+            data.throttle.at(0);
             ImPlot::PlotLine("throttle", data.time.data(), data.throttle.data(), data.time.size());
             ImPlot::PlotLine("Brake", data.time.data(), data.brake.data(), data.time.size());
             ImPlot::PlotLine("Speed", data.time.data(), data.speed.data(), data.time.size());
+        }else{
+            cout << "wait";
+        }
+            
        
         ImPlot::EndPlot();
     }
+}
+
+void InitAcceleration(Acceleration& acc){
+     acc.time.push_back(0);
+        acc.throttle.clear();
+        acc.brake.clear();
+        acc.speed.clear();
+        acc.x.clear();
+        acc.y.clear();
 }
 
 

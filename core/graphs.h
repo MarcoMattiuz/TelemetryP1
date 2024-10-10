@@ -20,10 +20,11 @@ struct Acceleration {
 };
 
 
-// Carica i dati CSV di accelerazione nel struct Acceleration
+
 void loadAccelerationCSV(Acceleration& acc);
 
-// Plotta i dati di accelerazione utilizzando ImPlot
+
 void PlotAcceleration(const Acceleration& data);
 
+void InitAcceleration(Acceleration& acc);
 #endif // ACCELERATION_H

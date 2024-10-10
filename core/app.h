@@ -5,4 +5,4 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl2.h"
 
-void app_render(Acceleration acc);
+void app_render(GLFWwindow *window);

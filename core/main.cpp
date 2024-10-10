@@ -14,12 +14,12 @@
 #include <iostream>
 
 #include "graphs.h"
-#include "csv.h";
-
+#include "csv.h"
+#include "globals.h"
 #include "app.h"
-using namespace std;
-GLFWwindow *window;
+using std::cout,std::vector,std::endl;
 
+GLFWwindow *window;
 GLFWwindow *open_window();
 void init_imgui(GLFWwindow *window);
 void render(GLFWwindow *window, const ImVec4 &clear_color);
@@ -34,25 +34,17 @@ void sig_handler(int sig_number) {
 
 int main() {
   std::cout << "--- Project 1 ---\n" << std::endl;
-  
-  
-
-
-
   signal(SIGINT, sig_handler);
   signal(SIGTERM, sig_handler);
-
-
-
   std::cout << "Opening Window" << std::endl;
   window = open_window();
   init_imgui(window);
   ImGuiIO &io = ImGui::GetIO();
   ImVec4 clear_color = ImVec4(0.06f, 0.06f, 0.06f, 0.94f);
   std::cout << "Done" << std::endl;
-
-  Acceleration acc;
-  loadAccelerationCSV(acc);
+ 
+  // Acceleration acc;
+  // loadAccelerationCSV(acc);
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
     // Start the Dear ImGui frame
@@ -61,7 +53,7 @@ int main() {
     ImGui::NewFrame();
 
     // renders tabs/buttons/...
-    app_render(acc);
+    app_render(window);
     
 
 
@@ -117,7 +109,7 @@ void init_imgui(GLFWwindow *window) {
 
 void render(GLFWwindow *window, const ImVec4 &clear_color) {
   static int display_w, display_h;
-
+  
   ImGui::Render();
   glfwGetFramebufferSize(window, &display_w, &display_h);
 
