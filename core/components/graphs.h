@@ -1,5 +1,5 @@
-#ifndef ACCELERATION_H
-#define ACCELERATION_H
+#ifndef GRAPHS_H
+#define GRAPHS_H
 
 #include <vector>
 #include <string>
@@ -27,4 +27,4 @@ void loadAccelerationCSV(Acceleration& acc);
 void PlotAcceleration(const Acceleration& data);
 
 void InitAcceleration(Acceleration& acc);
-#endif // ACCELERATION_H
+#endif 

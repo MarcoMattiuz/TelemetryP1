@@ -13,9 +13,9 @@
 #include <string>
 #include <iostream>
 
-#include "graphs.h"
+
 #include "csv.h"
-#include "globals.h"
+#include "components/globals.h"
 #include "app.h"
 using std::cout,std::vector,std::endl;
 
@@ -51,7 +51,7 @@ int main() {
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
+ 
     // renders tabs/buttons/...
     app_render(window);
     

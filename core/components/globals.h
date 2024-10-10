@@ -15,6 +15,9 @@ namespace glb {
     extern std::string username;
     extern Role role;
 }
+
 void setRole(int x);
 std::string getRole(Role role);
+void logout();
+
 #endif // GLOBALS_H

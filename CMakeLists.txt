@@ -24,8 +24,9 @@ add_library(
 
     # Sources
     ${CMAKE_CURRENT_SOURCE_DIR}/core/app.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/graphs.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/globals.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/components/graphs.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/components/globals.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/components/login.cpp
     
     # GUI
     ${imgui_srcs}

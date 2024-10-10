@@ -4,6 +4,11 @@ namespace glb
 {std::string username;
 Role role = None;}
 
+void logout(){
+    glb::role = None;
+    glb::username.clear();
+}
+
 void setRole(int x){
     switch (x)
     {
