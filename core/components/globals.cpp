@@ -1,12 +1,15 @@
 #include "globals.h"
 #include <string>
 namespace glb
-{std::string username;
-Role role = None;}
+{
+std::string username;
+Role role = None;
+const int n_roles = 4;}
 
 void logout(){
     glb::role = None;
     glb::username.clear();
+   
 }
 
 void setRole(int x){
@@ -27,7 +30,7 @@ void setRole(int x){
     }
 }
 
-std::string getRole(Role role){
+std::string getRoleStr(Role role){
     std::string ret = "None";
     switch (role)
     {
@@ -46,4 +49,27 @@ std::string getRole(Role role){
     }
 
     return ret;
+}
+
+
+Role getRoleByN(int n){
+    Role rl=None;
+
+    switch (n)
+    {
+    case 1:;
+    rl=Admin;
+        break;
+    case 2:
+    rl=Engineer;
+        break;
+    case 3:
+    rl=Pilot;
+        break;    
+    default:
+    rl=None;
+        break;
+    }
+
+    return rl;
 }

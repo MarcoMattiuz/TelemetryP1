@@ -14,10 +14,12 @@ enum Role{
 namespace glb {
     extern std::string username;
     extern Role role;
+    extern const int n_roles;
 }
 
 void setRole(int x);
-std::string getRole(Role role);
+std::string getRoleStr(Role role);
+Role getRoleByN(int n);
 void logout();
 
 #endif // GLOBALS_H

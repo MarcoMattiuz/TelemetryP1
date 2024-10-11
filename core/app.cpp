@@ -11,7 +11,7 @@
 using std::cout,std::endl,std::vector,std::string;
 Acceleration acc;
 bool dataLoaded = false;  
-
+bool openPopupCreateUser = false;
 
 
 
@@ -38,15 +38,16 @@ void app_render(GLFWwindow *window) {
       if(ImGui::BeginMenuBar()){
         if(ImGui::BeginMenu("USER MENU")){
           ImGui::MenuItem(("username: " + glb::username).c_str());
-          ImGui::MenuItem(("role: "+getRole(glb::role)).c_str());
+          ImGui::MenuItem(("role: "+getRoleStr(glb::role)).c_str());
           if(ImGui::MenuItem("LOGOUT")){
             logout();
           }
           if(glb::role == Admin){
             if(ImGui::MenuItem("CREATE NEW USER")){
               cout << "ADMIN";
-              ImGui::OpenPopup("CREATEUSER");
-              createUser(window);
+              
+              openPopupCreateUser = true;
+              // createUser(window);
             }
            
           }
@@ -56,6 +57,16 @@ void app_render(GLFWwindow *window) {
         ImGui::EndMenuBar();
       }
       
+      if(openPopupCreateUser){
+        ImGui::OpenPopup("CREATEUSER");
+        openPopupCreateUser = false;
+      }
+
+      // if(ImGui::BeginPopupModal("CREATEUSER")){
+      //   ImGui::Text("OK!");
+      //   ImGui::EndPopup();
+      // }
+      createUser(window);
       
 
       if (ImGui::BeginTabBar("bar", ImGuiTabBarFlags_Reorderable))
@@ -96,13 +107,45 @@ void app_render(GLFWwindow *window) {
 
                   ImGui::EndTabItem();
                 }
-                //user tab - logout 
-                //TODO *optional: see all users available (without password, obviously)
-                if(ImGui::BeginTabItem("User")){
+                
+                
+                if(glb::role == Admin){
+                  if(ImGui::BeginTabItem("Users List")){
+                    vector<string> usernames;
+                    vector<string> roles;
+                    io::CSVReader<2> in("../core/logins.csv");
+                    in.read_header(io::ignore_extra_column, "username","role");
+                    string username,filepassword;
+                    int role;
+                    while(in.read_row(username,role)){
+                       usernames.push_back(username);
+                       roles.push_back(getRoleStr(getRoleByN(role)));
+                    }
+                    //TODO *optional: see all users available (without password, obviously)
+                    ImGui::BeginTable("Users",2,ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders,ImVec2(400,50));
+                      ImGui::TableSetupColumn("username");
+                      ImGui::TableSetupColumn("role");
 
-                  
-                  ImGui::EndTabItem();
+                      // Aggiungi la riga degli header
+                      ImGui::TableHeadersRow();
+
+                      
+                    for (int i = 0; i < usernames.size(); i++)
+                    {ImGui::TableNextColumn();
+
+                      ImGui::TableSetColumnIndex(0);
+                      ImGui::Text(usernames[i].c_str());
+
+                      ImGui::TableSetColumnIndex(1);
+                      ImGui::Text(roles[i].c_str());
+
+                      
+                    }
+                      ImGui::EndTable();
+                    ImGui::EndTabItem();
+                  }
                 }
+                
 
 
 
