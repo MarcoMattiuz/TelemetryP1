@@ -1,6 +1,8 @@
 #include <iostream>
 #include <functional>
 #include <GLFW/glfw3.h>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "components/graphs.h"
 #include "app.h"
@@ -9,13 +11,17 @@
 #include "components/login.h"
 
 using std::cout,std::endl,std::vector,std::string;
-Acceleration acc;
+csvformat csv;
 bool dataLoaded = false;  
 bool openPopupCreateUser = false;
 
+vector<string> csvfiles;
+string selectedFile = "None";
+string folderPath = "../csv_samples/";
 
-
-
+static int item_selected_idx = 0; 
+static bool item_highlight = false;
+int item_highlighted_idx = -1; 
 
 void app_render(GLFWwindow *window) {
 
@@ -87,28 +93,73 @@ void app_render(GLFWwindow *window) {
                     }
                 }
                 
+
                 if (ImGui::BeginTabItem("Plot files"))
                 {
-                //TODO: FIX plotting
-                  if (ImGui::Button("Graph Acceleration")) {
+                  //TODO: make a list of files and load them
+                  // *** List of files group
+                 
+                  
+                 
+                  ImGui::BeginChild("files",ImVec2((windowWidth-100.0),windowHeight));
+
+                  if(ImGui::Button("LOAD FILES",ImVec2(100,20))){
                     
-                      loadAccelerationCSV(acc);
-                      cout << "caricato" << endl;
-                      dataLoaded=!dataLoaded;
+
+                      try {
+                          for (const auto& entry : fs::directory_iterator(folderPath)) {
+                            csvfiles.push_back(entry.path().filename().string());
+                              std::cout << entry.path().filename().string() << std::endl;
+                          }
+                      } catch (const fs::filesystem_error& e) {
+                          std::cerr << "Errore: " << e.what() << std::endl;
+                      }
+                    
                   }
+
+                  ImGui::SameLine();
+                  string displaySelectedFile = "Selected File: " + selectedFile;
+                  ImGui::TextColored(ImVec4(0,1,0,1),displaySelectedFile.c_str());
+                  ImGui::Separator();
+               
+                  if (ImGui::BeginListBox("##fileslist",ImVec2(200, windowHeight)))
+                  {
+                      for (int n = 0; n < csvfiles.size(); n++)
+                      {
+                          const bool is_selected = (item_selected_idx == n);
+                          
+                          if (ImGui::Button(csvfiles[n].c_str())){
+                              selectedFile = folderPath + csvfiles[n];
+                          }
+                              
+                              // item_selected_idx = n;
+
+                          if (item_highlight && ImGui::IsItemHovered())
+                              item_highlighted_idx = n;
+
+                          // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                          if (is_selected)
+                              ImGui::SetItemDefaultFocus();
+                      }
+                      ImGui::EndListBox();
+                  }
+                  ImGui::SameLine();
+                  ImPlot::BeginPlot("Plot 1",ImVec2(600,0));
+                 
+                  ImPlot::EndPlot();
+                  
+
+
+                  ImGui::EndChild();
+
         
-                if (dataLoaded) {
-                    PlotAcceleration(acc);
-                } else {
-                    
-                    ImGui::Text("Premi 'Carica' per visualizzare i dati.");
-                    
-                }
 
                   ImGui::EndTabItem();
                 }
                 
                 
+
+
                 if(glb::role == Admin){
                   if(ImGui::BeginTabItem("Users List")){
                     vector<string> usernames;
@@ -121,7 +172,7 @@ void app_render(GLFWwindow *window) {
                        usernames.push_back(username);
                        roles.push_back(getRoleStr(getRoleByN(role)));
                     }
-                    //TODO *optional: see all users available (without password, obviously)
+               
                     ImGui::BeginTable("Users",2,ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders,ImVec2(400,50));
                       ImGui::TableSetupColumn("username");
                       ImGui::TableSetupColumn("role");

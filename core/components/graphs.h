@@ -10,7 +10,7 @@
 
 using std::vector;
 
-struct Acceleration {
+struct csvformat {
     vector<double> time;
     vector<double> throttle;
     vector<double> brake;
@@ -21,10 +21,11 @@ struct Acceleration {
 
 
 
-void loadAccelerationCSV(Acceleration& acc);
+
+void loadCsvformat(csvformat& acc);
 
 
-void PlotAcceleration(const Acceleration& data);
+// void PlotCsvformat(const csvformat& data);
 
-void InitAcceleration(Acceleration& acc);
+void InitCsvformat(csvformat& acc);
 #endif 
