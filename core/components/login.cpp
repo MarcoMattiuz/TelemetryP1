@@ -169,7 +169,7 @@ void createUser(GLFWwindow *window){
                 if (item_highlight && ImGui::IsItemHovered())
                     item_highlighted_idx = n;
 
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                
                 if (is_selected)
                     ImGui::SetItemDefaultFocus();
             }

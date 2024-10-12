@@ -22,10 +22,10 @@ struct csvformat {
 
 
 
-void loadCsvformat(csvformat& acc);
-
-
-// void PlotCsvformat(const csvformat& data);
-
+void loadCsvformat(csvformat& acc,std::string filepath);
 void InitCsvformat(csvformat& acc);
+void plotThrottle(csvformat& csv);
+void plotBrake(csvformat& csv);
+void plotSpeed(csvformat& csv);
+
 #endif 

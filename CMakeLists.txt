@@ -27,6 +27,10 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/core/components/graphs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/components/globals.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/components/login.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/tabItems/userstab.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/tabItems/graphstab.cpp
+
+
     
     # GUI
     ${imgui_srcs}
