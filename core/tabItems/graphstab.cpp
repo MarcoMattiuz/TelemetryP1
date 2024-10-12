@@ -123,9 +123,12 @@ void renderGraphsTab(GLFWwindow *window){
         ImGui::Checkbox("Brake",&g2);
         ImGui::SameLine();
         ImGui::Checkbox("Speed",&g3);
-         ImGui::SameLine();
+        ImGui::SameLine();
         ImGui::Checkbox("Map",&g4);
-         
+        ImGui::SameLine();
+        ImGui::Checkbox("Link X", &linkx);
+        ImGui::SameLine();
+        ImGui::Checkbox("Link Y", &linky);
         }
         
         
@@ -158,7 +161,7 @@ void renderGraphsTab(GLFWwindow *window){
         }
         ImGui::SetCursorPos(ImVec2(cursorPos.x+210, cursorPos.y+70));
         if(ImGui::BeginChild("Graphs",ImVec2(850,700),ImGuiChildFlags_AutoResizeX)){
-
+            ImGui::DragScalarN("Limits",ImGuiDataType_Double,&lims.X.Min,4,0.01f);
             if(g1){plotThrottle(csv);}
 
             if(g2){plotBrake(csv);}

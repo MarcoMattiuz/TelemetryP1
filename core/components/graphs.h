@@ -20,7 +20,9 @@ struct csvformat {
 };
 
 
-
+extern bool linkx;
+extern bool linky;
+extern ImPlotRect lims;
 
 void loadCsvformat(csvformat& acc,std::string filepath);
 void InitCsvformat(csvformat& acc);

@@ -9,6 +9,11 @@
 using std::vector,std::cout,std::endl;
 
 
+ImPlotRect lims(0,1,0,1);
+bool linkx = true, linky = true;
+
+   
+
 
 
 void loadCsvformat(csvformat& csv, std::string filepath) {
@@ -43,12 +48,15 @@ void plotThrottle(csvformat& csv){
     if(ImPlot::BeginPlot("Throttle",ImVec2(800,0))){
     ImPlot::SetupAxes("Time","%");
     ImPlot::SetupAxesLimits(0,200,0,1);
+    ImPlot::SetupAxisLinks(ImAxis_X1, linkx ? &lims.X.Min : nullptr, linkx ? &lims.X.Max : nullptr);
+    ImPlot::SetupAxisLinks(ImAxis_Y1, linky ? &lims.Y.Min : nullptr, linky ? &lims.Y.Max : nullptr);
     ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4(0.0f, 1.0f, 0.0f, 1.0f)); // Green line
-
+            
             ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
             ImPlot::PlotShaded("throttle", csv.time.data(), csv.throttle.data(), csv.time.size(), 0);
             // ImPlot::PlotShaded("brake", csv.time.data(), csv.brake.data(), csv.time.size(),0);
             ImPlot::PopStyleVar();
+            
 
         ImPlot::PlotLine("throttle", csv.time.data(), csv.throttle.data(), csv.time.size());
     ImPlot::PopStyleColor();
@@ -61,14 +69,16 @@ void plotBrake(csvformat& csv){
     if(ImPlot::BeginPlot("Brake",ImVec2(800,0))){
     ImPlot::SetupAxes("Time","Bar");
     ImPlot::SetupAxesLimits(0,200,0,10);
+    ImPlot::SetupAxisLinks(ImAxis_X1, linkx ? &lims.X.Min : nullptr, linkx ? &lims.X.Max : nullptr);
+    ImPlot::SetupAxisLinks(ImAxis_Y1, linky ? &lims.Y.Min : nullptr, linky ? &lims.Y.Max : nullptr);
+ 
     ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4(1.0f, 0.0f, 1.0f, 1.0f));
             ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.35f);
             // ImPlot::PlotShaded("throttle", csv.time.data(), csv.throttle.data(), csv.time.size(), 0);
             ImPlot::PlotShaded("brake", csv.time.data(), csv.brake.data(), csv.time.size(),0);
             ImPlot::PopStyleVar();
         
-     
- 
+            
     // ImPlot::PlotLine("throttle", csv.time.data(), csv.throttle.data(), csv.time.size());
     ImPlot::PlotLine("brake", csv.time.data(), csv.brake.data(), csv.time.size());
     ImPlot::PopStyleColor();
@@ -81,6 +91,8 @@ void plotSpeed(csvformat& csv){
     if(ImPlot::BeginPlot("Speed",ImVec2(800,0))){
     ImPlot::SetupAxes("Time","m/s");
     ImPlot::SetupAxesLimits(0,200,0,100);
+    ImPlot::SetupAxisLinks(ImAxis_X1, linkx ? &lims.X.Min : nullptr, linkx ? &lims.X.Max : nullptr);
+    ImPlot::SetupAxisLinks(ImAxis_Y1, linky ? &lims.Y.Min : nullptr, linky ? &lims.Y.Max : nullptr);
     ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4(1.0f, 0.5f, 0.5f, 1.0f));
             ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.35f);
             // ImPlot::PlotShaded("throttle", csv.time.data(), csv.throttle.data(), csv.time.size(), 0);
