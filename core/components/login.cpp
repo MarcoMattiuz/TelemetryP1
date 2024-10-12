@@ -29,7 +29,7 @@ void LogIn(GLFWwindow *window){
 
     int windowWidth, windowHeight;
     glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
-    const ImVec2 popupSize(400, 300); 
+    const ImVec2 popupSize(350, 200); 
 
     if (glb::role == None) {
         ImGui::OpenPopup("Login");
@@ -107,11 +107,11 @@ void LogIn(GLFWwindow *window){
 
         
 
-        ImGui::SameLine(ImGui::GetWindowWidth() - 60); 
-        if (ImGui::Button("X", ImVec2(30, 30))) {
-            glb::role = Admin;
-            ImGui::CloseCurrentPopup(); 
-        }
+        // ImGui::SameLine(ImGui::GetWindowWidth() - 60); 
+        // if (ImGui::Button("X", ImVec2(30, 30))) {
+        //     glb::role = Admin;
+        //     ImGui::CloseCurrentPopup(); 
+        // }
 
         ImGui::EndPopup();
     }
@@ -122,7 +122,7 @@ void LogIn(GLFWwindow *window){
 void createUser(GLFWwindow *window){
     int windowWidth, windowHeight;
     glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
-    const ImVec2 popupSize(400, 300); 
+    const ImVec2 popupSize(350, 200); 
 
  
     if (ImGui::BeginPopupModal("CREATEUSER", nullptr, ImGuiWindowFlags_NoResize)) {
