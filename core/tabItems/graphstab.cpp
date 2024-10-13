@@ -27,12 +27,18 @@ string folderPath = "../csv_samples/";
 static int item_selected_idx = 0; 
 static bool item_highlight = false;
 int item_highlighted_idx = -1; 
-
+double cSpeed = 0.0f;
 
 double findAvg(vector<double> v){
     double sum = std::accumulate(v.begin(),v.end(),0);
     return sum/v.size();
 }
+
+auto maxSpeed = std::max_element(csv.speed.begin(), csv.speed.end());
+auto maxBrake= std::max_element(csv.brake.begin(), csv.brake.end());
+double avgSpeed = findAvg(csv.speed);
+
+
 
 
 void RenderMapWithPoints(csvformat csv,double cTime)
@@ -57,7 +63,7 @@ void RenderMapWithPoints(csvformat csv,double cTime)
         double centerX = mapPos.x + mapWidth/2;
         double centery = mapPos.y + mapHeight/2;
 
-    
+
         for (size_t i = 0; i < xCoords.size(); ++i)
         {
             // cout << cTime << endl;
@@ -65,8 +71,12 @@ void RenderMapWithPoints(csvformat csv,double cTime)
             float x = (centerX + xCoords[i] * scale);
             float y = (centery + yCoords[i] * scale); 
             drawList->AddCircle(ImVec2(x, y), 1.3f, IM_COL32(255, 0, 255, 255),12);
-            if(cTime <= (csv.time[i]+0.1) && cTime >= (csv.time[i]-0.1)){
-                drawList->AddCircle(ImVec2(x, y), 4.0f, IM_COL32(255, 165, 0, 255),4);
+            if(cTime <= (csv.time[i]+0.5) && cTime >= (csv.time[i]-0.5)){
+                cSpeed = csv.speed[i];
+                drawList->AddCircleFilled(ImVec2(x, y), 3.5f, IM_COL32(255, 0, 0, 255),12);
+            }
+            if(csv.speed[i] <= (*maxSpeed+0.1) && csv.speed[i] >= (*maxSpeed-0.1)){
+                drawList->AddCircleFilled(ImVec2(x, y), 3.5f, IM_COL32(0, 255, 0, 255),12);
             }
             
             
@@ -82,9 +92,9 @@ void RenderMapWithPoints(csvformat csv,double cTime)
 
 void renderStaticData(){
     if(selectedFile != "None"){
-        auto maxSpeed = std::max_element(csv.speed.begin(), csv.speed.end());
-        auto maxBrake= std::max_element(csv.brake.begin(), csv.brake.end());
-        double avgSpeed = findAvg(csv.speed);
+        maxSpeed = std::max_element(csv.speed.begin(), csv.speed.end());
+        maxBrake= std::max_element(csv.brake.begin(), csv.brake.end());
+        avgSpeed = findAvg(csv.speed);
         
         ImGui::SetWindowFontScale(1.2f);
         if(glb::role == Pilot || glb::role == Admin){
@@ -210,6 +220,10 @@ void renderGraphsTab(GLFWwindow *window){
                 if(ImGui::Button("reset",ImVec2(50,20))){
                     drag_tag=10.0;
                 }
+                ImGui::SetWindowFontScale(1.2f);
+                ImGui::TextColored(ImVec4(0.5f, 0.7f, 1.0f, 1.0f),("Speed: "+std::to_string(cSpeed) + " m/s").c_str());
+                ImGui::TextColored(ImVec4(0.5f, 0.7f, 1.0f, 1.0f),("Speed: "+std::to_string(cSpeed*3.6) + " km/h").c_str());
+                ImGui::SetWindowFontScale(1.0f);
                 RenderMapWithPoints(csv,drag_tag);
             }
             
