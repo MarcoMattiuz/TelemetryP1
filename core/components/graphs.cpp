@@ -11,8 +11,8 @@ using std::vector,std::cout,std::endl;
 
 ImPlotRect lims(0,1,0,1);
 bool linkx = true, linky = true;
-
-   
+double drag_tag = 10.0f;
+double graphx =-1,graphy = 250;
 
 
 
@@ -45,11 +45,13 @@ void InitCsvformat(csvformat& csv){
 }
 
 void plotThrottle(csvformat& csv){
-    if(ImPlot::BeginPlot("Throttle",ImVec2(800,0))){
+    if(ImPlot::BeginPlot("Throttle",ImVec2(graphx,graphy))){
     ImPlot::SetupAxes("Time","%");
     ImPlot::SetupAxesLimits(0,200,0,1);
     ImPlot::SetupAxisLinks(ImAxis_X1, linkx ? &lims.X.Min : nullptr, linkx ? &lims.X.Max : nullptr);
     ImPlot::SetupAxisLinks(ImAxis_Y1, linky ? &lims.Y.Min : nullptr, linky ? &lims.Y.Max : nullptr);
+    ImPlot::DragLineX(0,&drag_tag,ImVec4(1,0,0,1),1,ImPlotDragToolFlags_NoFit);
+    ImPlot::TagX(drag_tag, ImVec4(1,0,0,1), "Time");
     ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4(0.0f, 1.0f, 0.0f, 1.0f)); // Green line
             
             ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
@@ -66,12 +68,13 @@ void plotThrottle(csvformat& csv){
 }
 
 void plotBrake(csvformat& csv){
-    if(ImPlot::BeginPlot("Brake",ImVec2(800,0))){
+    if(ImPlot::BeginPlot("Brake",ImVec2(graphx,graphy))){
     ImPlot::SetupAxes("Time","Bar");
     ImPlot::SetupAxesLimits(0,200,0,10);
     ImPlot::SetupAxisLinks(ImAxis_X1, linkx ? &lims.X.Min : nullptr, linkx ? &lims.X.Max : nullptr);
     ImPlot::SetupAxisLinks(ImAxis_Y1, linky ? &lims.Y.Min : nullptr, linky ? &lims.Y.Max : nullptr);
- 
+    ImPlot::DragLineX(0,&drag_tag,ImVec4(1,0,0,1),1,ImPlotDragToolFlags_NoFit);
+    ImPlot::TagX(drag_tag, ImVec4(1,0,0,1), "Time");
     ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4(1.0f, 0.0f, 1.0f, 1.0f));
             ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.35f);
             // ImPlot::PlotShaded("throttle", csv.time.data(), csv.throttle.data(), csv.time.size(), 0);
@@ -88,11 +91,13 @@ void plotBrake(csvformat& csv){
 
 
 void plotSpeed(csvformat& csv){
-    if(ImPlot::BeginPlot("Speed",ImVec2(800,0))){
+    if(ImPlot::BeginPlot("Speed",ImVec2(graphx,graphy))){
     ImPlot::SetupAxes("Time","m/s");
     ImPlot::SetupAxesLimits(0,200,0,100);
     ImPlot::SetupAxisLinks(ImAxis_X1, linkx ? &lims.X.Min : nullptr, linkx ? &lims.X.Max : nullptr);
     ImPlot::SetupAxisLinks(ImAxis_Y1, linky ? &lims.Y.Min : nullptr, linky ? &lims.Y.Max : nullptr);
+    ImPlot::DragLineX(0,&drag_tag,ImVec4(1,0,0,1),1,ImPlotDragToolFlags_NoFit);
+    ImPlot::TagX(drag_tag, ImVec4(1,0,0,1), "Time");
     ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4(1.0f, 0.5f, 0.5f, 1.0f));
             ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.35f);
             // ImPlot::PlotShaded("throttle", csv.time.data(), csv.throttle.data(), csv.time.size(), 0);

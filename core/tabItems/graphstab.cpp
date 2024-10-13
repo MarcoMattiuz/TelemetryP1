@@ -35,42 +35,74 @@ double findAvg(vector<double> v){
 }
 
 
-void RenderMapWithPoints(vector<double> xCoords,vector<double> yCoords)
+void RenderMapWithPoints(csvformat csv,double cTime)
 {
+    vector<double> xCoords = csv.x;
+    vector<double> yCoords = csv.y;
 
-    ImGui::BeginChild("map",ImVec2(500,500));
-    double scale = 2.0f;
-   
-    const float mapWidth = 300.0f;
-    const float mapHeight = 200.0f;
+    ImGui::BeginChild("map",ImVec2(600,600));
+        double scale = 3.0f;
+    
+        const float mapWidth = 300.0f;
+        const float mapHeight = 200.0f;
+
+        
+        ImGui::SetCursorPos(ImVec2(0, 0)); 
+        ImGui::InvisibleButton("map", ImVec2(mapWidth, mapHeight)); 
+
+        ImDrawList* drawList = ImGui::GetWindowDrawList();
+        ImVec2 mapPos = ImGui::GetCursorScreenPos(); 
+        // drawList->AddRect(mapPos, ImVec2(mapPos.x + mapWidth, mapPos.y + mapHeight), IM_COL32(0, 255, 0, 255));
+
+        double centerX = mapPos.x + mapWidth/2;
+        double centery = mapPos.y + mapHeight/2;
 
     
-    ImGui::SetCursorPos(ImVec2(0, 0)); 
-    ImGui::InvisibleButton("map", ImVec2(mapWidth, mapHeight)); 
-
-    ImDrawList* drawList = ImGui::GetWindowDrawList();
-    ImVec2 mapPos = ImGui::GetCursorScreenPos(); 
-    // drawList->AddRect(mapPos, ImVec2(mapPos.x + mapWidth, mapPos.y + mapHeight), IM_COL32(0, 255, 0, 255));
-
-    double centerX = mapPos.x + mapWidth/2;
-    double centery = mapPos.y + mapHeight/2;
-
-  
-    for (size_t i = 0; i < xCoords.size(); ++i)
-    {
-        float x = (centerX + xCoords[i] * scale);
-        float y = (centery + yCoords[i] * scale); 
-
-        drawList->AddCircle(ImVec2(x, y), 1.3f, IM_COL32(255, 0, 255, 255),12);
+        for (size_t i = 0; i < xCoords.size(); ++i)
+        {
+            // cout << cTime << endl;
         
+            float x = (centerX + xCoords[i] * scale);
+            float y = (centery + yCoords[i] * scale); 
+            drawList->AddCircle(ImVec2(x, y), 1.3f, IM_COL32(255, 0, 255, 255),12);
+            if(cTime <= (csv.time[i]+0.1) && cTime >= (csv.time[i]-0.1)){
+                drawList->AddCircle(ImVec2(x, y), 4.0f, IM_COL32(255, 165, 0, 255),4);
+            }
+            
+            
 
 
 
-    }
-    drawList->AddCircle(ImVec2(centerX, centery), 4.0f, IM_COL32(0, 255, 0, 255),12);
-    ImGui::EndChild();
+        }
+        drawList->AddCircle(ImVec2(centerX, centery), 4.0f, IM_COL32(0, 255, 0, 255),20);
+        ImGui::EndChild();
+    
 }
 
+
+void renderStaticData(){
+    if(selectedFile != "None"){
+        auto maxSpeed = std::max_element(csv.speed.begin(), csv.speed.end());
+        auto maxBrake= std::max_element(csv.brake.begin(), csv.brake.end());
+        double avgSpeed = findAvg(csv.speed);
+        
+        ImGui::SetWindowFontScale(1.2f);
+        if(glb::role == Pilot || glb::role == Admin){
+            ImGui::TextColored(ImVec4(0,1,0,1),("Max Speed: "+std::to_string(*maxSpeed*3.6)+"km/h").c_str());
+            ImGui::TextColored(ImVec4(1,0,0.5,1),("Avg Speed: "+std::to_string(avgSpeed*3.6)+"km/h").c_str());
+            
+        }
+        if(glb::role == Engineer || glb::role == Admin){
+            ImGui::TextColored(ImVec4(0,1,0,1),("Max Speed: "+std::to_string(*maxSpeed)+"m/s").c_str());
+            ImGui::TextColored(ImVec4(1,0,0.5,1),("Avg Speed: "+std::to_string(avgSpeed)+"m/s").c_str());
+            
+        }
+        ImGui::TextColored(ImVec4(1,0,1,1),("Max Brake: "+std::to_string(*maxBrake)+"Bar").c_str());
+        ImGui::SetWindowFontScale(1.0f);
+
+
+        }
+}
 
 void renderGraphsTab(GLFWwindow *window){
     ImVec2 cursorPos = ImGui::GetCursorPos();
@@ -79,13 +111,7 @@ void renderGraphsTab(GLFWwindow *window){
     glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
     if (ImGui::BeginTabItem("Plot files"))
     {
-        //TODO: make a list of files and load them
-        // *** List of files group
         
-        
-        
-        // ImGui::BeginChild("files",ImVec2((windowWidth-100.0),windowHeight));
-
         if(ImGui::Button("LOAD FILES",ImVec2(100,20))){
         
 
@@ -159,55 +185,40 @@ void renderGraphsTab(GLFWwindow *window){
             }
             ImGui::EndListBox();
         }
-        ImGui::SetCursorPos(ImVec2(cursorPos.x+210, cursorPos.y+70));
-        if(ImGui::BeginChild("Graphs",ImVec2(850,700),ImGuiChildFlags_AutoResizeX)){
+
+        renderStaticData();
+
+        ImGui::SetCursorPos(ImVec2(cursorPos.x+230, cursorPos.y+70));
+        ImGui::BeginChild("Graphs",ImVec2(850,700),ImGuiChildFlags_AutoResizeX);
             if(g1){plotThrottle(csv);}
             if(g2){plotBrake(csv);}
             if(g3){plotSpeed(csv);}
             ImGui::EndChild();
-        }
+        
 
 
         
         
         
         ImGui::SameLine();
-
-        ImGui::BeginChild("data",ImVec2(320,windowHeight),ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY );
-        if(selectedFile != "None"){
-        auto maxSpeed = std::max_element(csv.speed.begin(), csv.speed.end());
-        auto maxBrake= std::max_element(csv.brake.begin(), csv.brake.end());
-        double avgSpeed = findAvg(csv.speed);
-        ImGui::SetWindowFontScale(1.5f);
-        if(glb::role == Pilot || glb::role == Admin){
-            ImGui::TextColored(ImVec4(0,1,0,1),("Max Speed: "+std::to_string(*maxSpeed*3.6)+"km/h").c_str());
-            ImGui::TextColored(ImVec4(1,0,0.5,1),("Avg Speed: "+std::to_string(avgSpeed*3.6)+"km/h").c_str());
+        ImGui::BeginChild("data",ImVec2(500,700),ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY );
+            if(selectedFile != "None" && g4){
+                ImGui::SetWindowFontScale(1.2f);
+                ImGui::TextColored(ImVec4(0.5f, 0.7f, 1.0f, 1.0f),("Time: "+std::to_string(drag_tag)).c_str());
+                ImGui::SetWindowFontScale(1.0f);
+                ImGui::SameLine();
+                if(ImGui::Button("reset",ImVec2(50,20))){
+                    drag_tag=10.0;
+                }
+                RenderMapWithPoints(csv,drag_tag);
+            }
             
-        }
-        if(glb::role == Engineer || glb::role == Admin){
-            ImGui::TextColored(ImVec4(0,1,0,1),("Max Speed: "+std::to_string(*maxSpeed)+"m/s").c_str());
-            ImGui::TextColored(ImVec4(1,0,0.5,1),("Avg Speed: "+std::to_string(avgSpeed)+"m/s").c_str());
             
-        }
-        ImGui::TextColored(ImVec4(1,0,1,1),("Max Brake: "+std::to_string(*maxBrake)+"Bar").c_str());
-        ImGui::SetWindowFontScale(1.0f);
-
-
-        }
-        if(selectedFile != "None" && g4){
-        RenderMapWithPoints(csv.x,csv.y);
-        }
+            ImGui::EndChild();
         
         
-        ImGui::EndChild();
-        
-        
-        
-
-       
-
-
-
+      
+    
         ImGui::EndTabItem();
     }
 }

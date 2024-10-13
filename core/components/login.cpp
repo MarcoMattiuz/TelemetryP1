@@ -61,7 +61,7 @@ void LogIn(GLFWwindow *window){
         }
         
         //readFile
-        if(ImGui::Button("LOGIN",ImVec2(50,20))){
+        if(ImGui::Button("LOGIN",ImVec2(50,20)) || ImGui::IsKeyPressed(ImGuiKey_Enter,false)){
             
           passwordHash = stringToHash(passwordBuffer);
              
@@ -122,7 +122,7 @@ void LogIn(GLFWwindow *window){
 void createUser(GLFWwindow *window){
     int windowWidth, windowHeight;
     glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
-    const ImVec2 popupSize(350, 200); 
+    const ImVec2 popupSize(350, 300); 
 
  
     if (ImGui::BeginPopupModal("CREATEUSER", nullptr, ImGuiWindowFlags_NoResize)) {
@@ -179,7 +179,7 @@ void createUser(GLFWwindow *window){
         
        
                     
-            if(ImGui::Button("CREATE USER",ImVec2(50,20))){
+            if(ImGui::Button("CREATE USER",ImVec2(50,20))|| ImGui::IsKeyPressed(ImGuiKey_Enter,false)){
              
                 passwordHash = stringToHash(passwordBuffer);
           

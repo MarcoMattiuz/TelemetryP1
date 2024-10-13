@@ -100,7 +100,7 @@ void app_render(GLFWwindow *window) {
             renderGraphsTab(window);
             renderUsersTab();
 
-            
+           
             ImGui::EndTabBar();
     }
 
