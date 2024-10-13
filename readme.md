@@ -2,7 +2,7 @@
 ## accounts: 
 - username: admin, password: adminpwd, role:Admin
 - username: marco, password: marcopsw, role:Engineer
-- username: maxv, password: maxvpsw, role:Pilor
+- username: maxv, password: maxvpsw, role:Pilot
 
 If you are logged in as Admin you can create accounts by clicking the "create account" button in the "user menu"
 
