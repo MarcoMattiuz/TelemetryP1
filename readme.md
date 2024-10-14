@@ -1,6 +1,6 @@
 # TelemetryP1 
 ## accounts: 
-- username: admin, password: adminpwd, role:Admin
+- username: admin, password: adminpsw, role:Admin
 - username: marco, password: marcopsw, role:Engineer
 - username: maxv, password: maxvpsw, role:Pilot
 
