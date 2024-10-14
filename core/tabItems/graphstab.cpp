@@ -71,7 +71,7 @@ void RenderMapWithPoints(csvformat csv,double cTime)
             float x = (centerX + xCoords[i] * scale);
             float y = (centery + yCoords[i] * scale); 
             drawList->AddCircle(ImVec2(x, y), 1.3f, IM_COL32(255, 0, 255, 255),12);
-            if(cTime <= (csv.time[i]+0.5) && cTime >= (csv.time[i]-0.5)){
+            if(cTime <= (csv.time[i]+0.05) && cTime >= (csv.time[i]-0.05)){
                 cSpeed = csv.speed[i];
                 drawList->AddCircleFilled(ImVec2(x, y), 3.5f, IM_COL32(255, 0, 0, 255),12);
             }

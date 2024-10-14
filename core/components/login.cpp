@@ -153,7 +153,7 @@ void createUser(GLFWwindow *window){
         //TODO:
       
 
-        const char* items[] = { "Admin", "Engeneer", "Pilot"};
+        const char* items[] = { "Admin", "Engineer", "Pilot"};
         static int item_selected_idx = 0; 
 
         static bool item_highlight = false;
