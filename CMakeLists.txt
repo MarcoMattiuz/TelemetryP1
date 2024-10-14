@@ -11,10 +11,13 @@ find_package(glfw3 3.3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/implot
+    ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/hash-library
+
 )
 
 FILE(GLOB imgui_srcs ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui/*)
@@ -41,12 +44,17 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/implot/implot.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/implot/implot_items.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/implot/implot_demo.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/hash-library/sha256.cpp
+
+
+
 )
 
 target_link_libraries(${PROJECT_NAME}
     glfw
     OpenGL::GL
     GLEW::GLEW
+
     dl
 )
 if(NOT APPLE)

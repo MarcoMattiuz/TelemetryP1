@@ -6,6 +6,8 @@
 #include "csv.h"
 #include "globals.h"
 #include "login.h"
+
+#include <sha256.h>
 using std::string,std::cout,std::endl;
 
 bool showLoginPopup = true;
@@ -261,10 +263,22 @@ void createUser(GLFWwindow *window){
 
 
 string stringToHash(string str){
-    std::hash<std::string> hash_fn;
-    size_t hash = hash_fn(str);
-    std::ostringstream oss;
-    oss << hash;  
-    std::string hash_string = oss.str();
+    // std::hash<std::string> hash_fn;
+    // size_t hash = hash_fn(str);
+    // std::ostringstream oss;
+    // oss << hash;  
+    // std::string hash_string = oss.str();
+
+
+    SHA256 sha256;
+    string hash_string = sha256(str);
+    // hashing an std::string
+    // std::cout << hash_string << std::endl;
+    
+
+    
+
+
+
     return hash_string;
 }
