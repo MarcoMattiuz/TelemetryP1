@@ -18,7 +18,7 @@ If you are logged in as Admin you can create accounts by clicking the "create ac
 sudo apt install build-essential cmake libglfw3-dev libglew-dev mesa-utils
 ```
 ### For macOS with homebrew:
-You have to go to thirdparty/hash-library/sha256.cpp and replace #include <endian> with #include <machine/endian.h>
+You have to go to thirdparty/hash-library/sha256.cpp and replace #include <endian.h> with #include <machine/endian.h>
 
 ```zsh
     brew install mesa
